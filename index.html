@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Generator - Create Prompts for Midjourney, ChatGPT, Suno & More | myscrpts.com</title>
+    <meta name="description" content="Generate tailored AI prompts for various models like Midjourney, ChatGPT, Suno, DALL-E, and more. Customize prompts for text, image, audio, video, and 3D models with specific parameters for better results. Requires your own Gemini API Key.">
+    <meta name="keywords" content="AI prompt generator, Midjourney prompts, ChatGPT prompts, Suno prompts, DALL-E prompts, AI text generation, AI image generation, AI audio generation, AI video generation, AI 3D model generation, prompt engineering, myscrpts, AI tools, Gemini API">
+    <meta name="author" content="myscrpts.com">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ai-prompt-generator.myscrpts.com/">
+    <meta property="og:title" content="AI Prompt Generator - Create Prompts for Midjourney, ChatGPT, Suno & More (User API Key)">
+    <meta property="og:description" content="Generate tailored AI prompts for various models. Requires your own Gemini API Key.">
+    <meta property="og:image" content="https://placehold.co/1200x630/6366f1/ffffff?text=AI+Prompt+Generator+v2">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://ai-prompt-generator.myscrpts.com/">
+    <meta name="twitter:title" content="AI Prompt Generator - Create Prompts for Midjourney, ChatGPT, Suno & More (User API Key)">
+    <meta name="twitter:description" content="Generate tailored AI prompts for various models. Requires your own Gemini API Key.">
+    <meta name="twitter:image" content="https://placehold.co/1200x675/6366f1/ffffff?text=AI+Prompt+Generator+v2">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom font for better aesthetics */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            color: #333; /* Default text color for light mode */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dracula Dark mode styles with neon-inspired glow */
+        body.dark {
+            background-color: #282a36; /* Dracula background */
+            color: #f8f8f2; /* Dracula foreground text */
+        }
+        body.dark .container, body.dark .modal-content {
+            background-color: #2d3748; /* Dracula current line/selection, slightly lighter for container */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Stronger shadow for dark mode */
+        }
+        body.dark .input-group label, body.dark .modal-content h2 {
+            color: #8be9fd; /* Dracula cyan for labels (neon) */
+            text-shadow: 0 0 5px rgba(139, 233, 253, 0.5); /* Subtle glow */
+        }
+        body.dark .input-group input[type="text"],
+        body.dark .input-group input[type="password"],
+        body.dark .input-group textarea,
+        body.dark .input-group select,
+        body.dark .input-group input[type="number"] {
+            background-color: #44475a; /* Dracula selection/comment */
+            border-color: #6272a4; /* Dracula comment/darker accent for border */
+            color: #f8f8f2; /* Dracula foreground text */
+        }
+        body.dark .input-group select[multiple] option:checked {
+            background-color: #bd93f9; /* Dracula purple for selected items */
+            color: white; /* White text on purple */
+        }
+        body.dark .tab-button {
+            background-color: #44475a; /* Dracula selection/comment */
+            color: #f8f8f2; /* Dracula foreground text */
+        }
+        body.dark .tab-button.active {
+            background-color: #bd93f9; /* Dracula purple */
+            color: white;
+            box-shadow: 0 4px 10px rgba(189, 147, 249, 0.5); /* Enhanced shadow for active tab */
+        }
+        body.dark .tab-button:hover:not(.active) {
+            background-color: #6272a4; /* Dracula comment/darker accent for hover */
+        }
+        body.dark .prompt-section {
+            background-color: #2d3748; /* Dracula current line/selection */
+            border-color: #44475a; /* Dracula selection/comment */
+        }
+        body.dark .prompt-section h3 {
+            color: #ffb86c; /* Dracula orange for section titles (neon) */
+            border-color: #44475a; /* Dracula selection/comment */
+            text-shadow: 0 0 8px rgba(255, 184, 108, 0.7); /* Stronger glow */
+        }
+        body.dark .prompt-section p {
+            background-color: #44475a; /* Dracula selection/comment */
+            border-color: #bd93f9; /* Dracula purple dashed border */
+            color: #f8f8f2; /* Dracula foreground text */
+            text-shadow: 0 0 3px rgba(139, 233, 253, 0.3); /* Very subtle glow for readability */
+        }
+        body.dark .loading-indicator {
+            color: #bd93f9; /* Dracula purple */
+        }
+        body.dark .spinner {
+            border-color: rgba(189, 147, 249, 0.2); /* Transparent Dracula purple */
+            border-top-color: #bd93f9; /* Dracula purple */
+        }
+
+        /* Specific glowing text for dark theme */
+        body.dark .main-heading {
+            color: #ffb86c; /* Dracula orange */
+            text-shadow: 0 0 10px rgba(255, 184, 108, 0.8); /* Stronger glow for main heading */
+        }
+        body.dark .intro-paragraph {
+            color: #f8f8f2; /* Glowing white */
+            text-shadow: 0 0 8px rgba(248, 248, 242, 0.7); /* Stronger glow for intro paragraph */
+        }
+        body.dark .api-key-link, body.dark .modal-content a {
+            color: #8be9fd; /* Dracula cyan for links */
+        }
+        body.dark .modal-content p, body.dark .modal-content li {
+             color: #f8f8f2;
+        }
+
+
+        /* General Container Styles */
+        .container {
+            max-width: 90%; /* Fluid width for responsiveness */
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: #ffffff; /* Light mode container background */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .input-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="password"],
+        .input-group textarea,
+        .input-group select,
+        .input-group input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s ease-in-out, background-color 0.3s ease, color 0.3s ease;
+        }
+        .input-group textarea {
+            resize: vertical; /* Allow vertical resizing */
+            min-height: 80px; /* Minimum height for textarea */
+        }
+        .input-group input:focus,
+        .input-group input[type="password"]:focus,
+        .input-group textarea:focus,
+        .input-group select:focus,
+        .input-group input[type="number"]:focus {
+            outline: none;
+            border-color: #6366f1; /* Indigo focus border for light mode */
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        /* Style for multiple select dropdowns */
+        .input-group select[multiple] {
+            height: auto; /* Allow height to adjust based on options */
+            min-height: 100px; /* Minimum height for better visibility */
+            padding: 0.5rem;
+        }
+        .input-group select[multiple] option {
+            padding: 0.5rem;
+        }
+        .input-group select[multiple] option:checked {
+            background-color: #e0e7ff; /* Light indigo background for selected items in light mode */
+            color: #4f46e5; /* Darker indigo text for selected items in light mode */
+        }
+
+        .btn {
+            background-color: #6366f1; /* Indigo button for light mode */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+            display: inline-flex; /* For centering content */
+            align-items: center;
+            justify-content: center;
+        }
+        .btn:hover {
+            background-color: #4f46e5; /* Darker indigo on hover for light mode */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+        .btn:active {
+            transform: translateY(0); /* Press down effect */
+        }
+        body.dark .btn {
+            background-color: #bd93f9; /* Dracula purple for button in dark mode */
+            box-shadow: 0 4px 10px rgba(189, 147, 249, 0.3);
+        }
+        body.dark .btn:hover {
+            background-color: #a77be6; /* Darker purple on hover for dark mode */
+        }
+
+        .tab-button {
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            color: #4b5563; /* Default text color for light mode tabs */
+            background-color: #e5e7eb; /* Default background for light mode tabs */
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            background-color: #6366f1; /* Indigo for active tab in light mode */
+            color: white;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+        }
+        .tab-button:hover:not(.active) {
+            background-color: #d1d5db; /* Lighter gray on hover for light mode tabs */
+        }
+        .prompt-section {
+            background-color: #f9fafb; /* Lighter background for prompt sections in light mode */
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .prompt-section h3 {
+            font-weight: 600;
+            color: #4b5563; /* Default text color for light mode h3 */
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .prompt-section p {
+            background-color: #ffffff; /* White background for prompt text in light mode */
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px dashed #d1d5db; /* Dashed border for prompt text in light mode */
+            font-size: 0.95rem;
+            color: #374151; /* Darker text for prompt text in light mode */
+            word-wrap: break-word; /* Ensure long words break */
+            white-space: pre-wrap; /* Preserve whitespace and line breaks */
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.5rem;
+            color: #6366f1; /* Indigo for light mode loading */
+            font-weight: 500;
+        }
+        .spinner {
+            border: 4px solid rgba(99, 102, 241, 0.2); /* Transparent indigo for light mode spinner */
+            border-top: 4px solid #6366f1; /* Indigo for light mode spinner */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Header and Footer styles */
+        header {
+            background-color: #6366f1; /* Indigo header for light mode */
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        header.dark {
+            background-color: #44475a; /* Dracula selection/comment for dark mode header */
+        }
+        header .site-title {
+            color: #1a202c; /* Dark black for light mode logo */
+            transition: color 0.3s ease;
+        }
+        body.dark header .site-title {
+            color: #8be9fd; /* Dracula cyan for dark mode logo (neon) */
+            text-shadow: 0 0 8px rgba(139, 233, 253, 0.7); /* Stronger glow for title */
+        }
+
+        header .nav-link {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease, color 0.3s ease;
+            color: #1a202c; /* Dark text for nav links in light mode header */
+        }
+        header.dark .nav-link {
+            color: #f1fa8c; /* Dracula yellow for nav links in dark mode (neon) */
+            text-shadow: 0 0 5px rgba(241, 250, 140, 0.5); /* Subtle glow */
+        }
+        header .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        footer {
+            background-color: #333; /* Dark gray for light mode footer */
+            color: #1a202c; /* Dark black text for light mode footer */
+            padding: 1.5rem 0;
+            text-align: center;
+            margin-top: 3rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        footer.dark {
+            background-color: #191a21; /* Even darker Dracula background for dark mode footer */
+            color: #f8f8f2; /* Dracula foreground text */
+        }
+        .theme-toggle-btn {
+            background: none;
+            border: none;
+            color: white; /* White icon for light mode header */
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease, color 0.3s ease;
+        }
+        body.dark .theme-toggle-btn {
+            color: #f8f8f2; /* Dracula foreground text for dark mode icon */
+        }
+        .theme-toggle-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6); /* Dim background */
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .modal-close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .modal-close-btn:hover,
+        .modal-close-btn:focus {
+            color: #333;
+            text-decoration: none;
+        }
+        body.dark .modal-close-btn {
+            color: #f8f8f2;
+        }
+        body.dark .modal-close-btn:hover,
+        body.dark .modal-close-btn:focus {
+            color: #bd93f9;
+        }
+        .api-key-link {
+            color: #6366f1;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px; /* Max width for medium screens */
+            }
+        }
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 960px; /* Max width for large screens */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <header id="mainHeader" class="w-full">
+        <div class="container mx-auto flex justify-between items-center px-4">
+            <div class="text-2xl font-bold">
+                <a href="https://ai-prompt-generator.myscrpts.com" class="site-title no-underline">AI Prompt Generator</a>
+            </div>
+            <nav class="flex items-center space-x-4">
+                <a href="https://myscrpts.com" class="nav-link no-underline">Home</a>
+                <a href="https://myscrpts.com/about" class="nav-link no-underline">About</a>
+                <a href="https://myscrpts.com/contact" class="nav-link no-underline">Contact</a>
+                <button id="themeToggle" class="theme-toggle-btn">
+                    <span id="themeIcon" class="material-icons">
+                        ☀️
+                    </span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-start justify-center py-8">
+        <div class="container mx-auto p-6 bg-white rounded-xl shadow-lg">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-6 main-heading">Advanced AI Prompt Generator</h1>
+            <p class="text-center text-gray-600 mb-4 intro-paragraph">Enter your idea and specific details to generate tailored prompts for various AI models!</p>
+            <p class="text-center text-gray-600 mb-8 intro-paragraph">This tool requires your own Gemini API Key.</p>
+
+            <div class="input-group mb-4">
+                <label for="geminiApiKey" class="block text-gray-700 text-lg mb-2">Your Gemini API Key:</label>
+                <div class="flex items-center">
+                    <input type="password" id="geminiApiKey" placeholder="Enter your Gemini API Key"
+                           class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    <button id="clearApiKey" class="ml-2 p-2 text-gray-500 hover:text-red-600" title="Clear saved API Key">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-sm text-gray-500 mt-1">
+                    Key is saved in your browser for 90 days.
+                    <span id="showApiKeyInstructions" class="api-key-link">How to get a Gemini API Key?</span>
+                </p>
+            </div>
+
+            <div class="input-group mb-6">
+                <label for="generalIdea" class="block text-gray-700 text-lg mb-2">Your Core Idea:</label>
+                <textarea id="generalIdea" rows="3" placeholder="e.g., A futuristic city, A magical creature, A new song..."
+                          class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"></textarea>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-2 mb-8">
+                <button class="tab-button active" data-target="textSection">For Text</button>
+                <button class="tab-button" data-target="imageSection">For Image</button>
+                <button class="tab-button" data-target="audioSection">For Audio/Music</button>
+                <button class="tab-button" data-target="videoSection">For Video</button>
+                <button class="tab-button" data-target="3dSection">For 3D Model</button>
+            </div>
+
+            <div id="textSection" class="category-section">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Text Prompt Details</h2>
+                <div class="input-group mb-4">
+                    <label for="textModel" class="block text-gray-700 text-base mb-2">Select AI Model:</label>
+                    <select id="textModel" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Gemini">Gemini</option>
+                        <option value="ChatGPT">ChatGPT</option>
+                        <option value="Copilot">Copilot</option>
+                        <option value="Claude">Claude</option>
+                        <option value="LLaMA">LLaMA</option>
+                        <option value="Ollama">Ollama</option>
+                        <option value="Grok">Grok</option>
+                        <option value="Meta">Meta</option>
+                        <option value="Deepseek">Deepseek</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="textTone" class="block text-gray-700 text-base mb-2">Tone/Style (Select multiple if applicable):</label>
+                    <select id="textTone" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Formal">Formal</option>
+                        <option value="Informal">Informal</option>
+                        <option value="Humorous">Humorous</option>
+                        <option value="Poetic">Poetic</option>
+                        <option value="Technical">Technical</option>
+                        <option value="Narrative">Narrative</option>
+                        <option value="Concise">Concise</option>
+                        <option value="Descriptive">Descriptive</option>
+                        <option value="Persuasive">Persuasive</option>
+                        <option value="Empathetic">Empathetic</option>
+                    </select>
+                </div>
+                <div class="input-group mb-6">
+                    <label for="textAudience" class="block text-gray-700 text-base mb-2">Target Audience (Select multiple if applicable):</label>
+                    <select id="textAudience" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Children">Children</option>
+                        <option value="Teenagers">Teenagers</option>
+                        <option value="General Public">General Public</option>
+                        <option value="Experts">Experts (Specific Field)</option>
+                        <option value="Academics">Academics</option>
+                        <option value="Business Professionals">Business Professionals</option>
+                        <option value="Creative Writers">Creative Writers</option>
+                    </select>
+                </div>
+                <div class="flex justify-center mb-4">
+                    <button class="btn generate-btn" data-category="text">Generate Text Prompt</button>
+                </div>
+                <div id="textLoadingIndicator" class="loading-indicator hidden">
+                    <div class="spinner"></div>
+                    Generating text prompt...
+                </div>
+                <div id="textPromptOutput" class="prompt-section hidden">
+                    <h3>Generated Text Prompt</h3>
+                    <p></p>
+                </div>
+            </div>
+
+            <div id="imageSection" class="category-section hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Image Prompt Details</h2>
+                <div class="input-group mb-4">
+                    <label for="imageModel" class="block text-gray-700 text-base mb-2">Select AI Model:</label>
+                    <select id="imageModel" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Midjourney">Midjourney</option>
+                        <option value="DALL-E">DALL-E</option>
+                        <option value="Stable Diffusion">Stable Diffusion</option>
+                        <option value="Adobe Firefly">Adobe Firefly</option>
+                        <option value="Flux">Flux</option>
+                        <option value="Imagen">Imagen</option>
+                    </select>
+                </div>
+                <div id="midjourneyParameters" class="space-y-4 hidden">
+                    <h3 class="text-xl font-semibold text-gray-700">Midjourney Specific Parameters (Optional)</h3>
+                    <div class="input-group">
+                        <label for="mjChaos" class="block text-gray-700 text-base mb-2">Chaos (--chaos or --c):</label>
+                        <input type="number" id="mjChaos" min="0" max="100" placeholder="0-100 (e.g., 50)"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group">
+                        <label for="mjCharacterRef" class="block text-gray-700 text-base mb-2">Character Reference (--cref URL):</label>
+                        <input type="text" id="mjCharacterRef" placeholder="URL of character image"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group">
+                        <label for="mjNo" class="block text-gray-700 text-base mb-2">Exclude (--no text):</label>
+                        <input type="text" id="mjNo" placeholder="e.g., --no trees, --no blur"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group">
+                        <label for="mjQuality" class="block text-gray-700 text-base mb-2">Quality (--quality or --q):</label>
+                        <select id="mjQuality" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            <option value="">(Optional) Default</option>
+                            <option value=".25">.25 (Low)</option>
+                            <option value=".5">.5 (Medium)</option>
+                            <option value="1">1 (High)</option>
+                            <option value="2">2 (Very High)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="mjRepeat" class="block text-gray-700 text-base mb-2">Repeat (--repeat or --r):</label>
+                        <input type="number" id="mjRepeat" min="1" max="100" placeholder="1-100 (e.g., 5)"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group">
+                        <label for="mjSeed" class="block text-gray-700 text-base mb-2">Seed (--seed):</label>
+                        <input type="number" id="mjSeed" min="0" max="4294967295" placeholder="0-4294967295"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group">
+                        <label for="mjStop" class="block text-gray-700 text-base mb-2">Stop (--stop):</label>
+                        <input type="number" id="mjStop" min="10" max="100" placeholder="10-100 (e.g., 80)"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group">
+                        <label for="mjStylize" class="block text-gray-700 text-base mb-2">Stylize (--stylize or --s):</label>
+                        <input type="number" id="mjStylize" min="0" max="1000" placeholder="0-1000 (e.g., 250)"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group">
+                        <label for="mjStyleRef" class="block text-gray-700 text-base mb-2">Style Reference (--sref URL):</label>
+                        <input type="text" id="mjStyleRef" placeholder="URL of style image"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group">
+                        <label for="mjVersion" class="block text-gray-700 text-base mb-2">Version (--version or --v / --niji):</label>
+                        <select id="mjVersion" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            <option value="">(Optional) Default</option>
+                            <option value="5">V5</option>
+                            <option value="5.1">V5.1</option>
+                            <option value="5.2">V5.2</option>
+                            <option value="6">V6</option>
+                            <option value="6.1">V6.1</option>
+                            <option value="niji">Niji</option>
+                            <option value="niji 5">Niji 5</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="mjWeird" class="block text-gray-700 text-base mb-2">Weird (--weird or --w):</label>
+                        <input type="number" id="mjWeird" min="0" max="3000" placeholder="0-3000 (e.g., 500)"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group flex items-center mb-2">
+                        <input type="checkbox" id="mjRaw" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="mjRaw" class="text-gray-700 text-base">Raw Mode (--raw)</label>
+                    </div>
+                    <div class="input-group flex items-center mb-2">
+                        <input type="checkbox" id="mjTile" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="mjTile" class="text-gray-700 text-base">Tile (--tile)</label>
+                    </div>
+                    <div class="input-group flex items-center mb-2">
+                        <input type="checkbox" id="mjDraft" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="mjDraft" class="text-gray-700 text-base">Draft (--draft)</label>
+                    </div>
+                    <div class="input-group flex items-center mb-2">
+                        <input type="checkbox" id="mjFast" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="mjFast" class="text-gray-700 text-base">Fast Mode (--fast)</label>
+                    </div>
+                    <div class="input-group">
+                        <label for="mjImageWeight" class="block text-gray-700 text-base mb-2">Image Weight (--iw):</label>
+                        <input type="number" id="mjImageWeight" min="0" max="3" step="any" placeholder="0-3 (e.g., 1.5)"
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div class="input-group flex items-center mb-2">
+                        <input type="checkbox" id="mjRelax" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="mjRelax" class="text-gray-700 text-base">Relax Mode (--relax)</label>
+                    </div>
+                    <div class="input-group flex items-center mb-2">
+                        <input type="checkbox" id="mjTurbo" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="mjTurbo" class="text-gray-700 text-base">Turbo Mode (--turbo)</label>
+                    </div>
+                    <div class="input-group flex items-center mb-2">
+                        <input type="checkbox" id="mjStealth" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="mjStealth" class="text-gray-700 text-base">Stealth Mode (--stealth)</label>
+                    </div>
+                    <div class="input-group flex items-center mb-6">
+                        <input type="checkbox" id="mjPublic" class="mr-2 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="mjPublic" class="text-gray-700 text-base">Public Mode (--public)</label>
+                    </div>
+                </div>
+
+                <div class="input-group mb-4">
+                    <label for="imageAspectRatio" class="block text-gray-700 text-base mb-2">Aspect Ratio (Select one):</label>
+                    <select id="imageAspectRatio" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="">(Optional) Select Aspect Ratio</option>
+                        <option value="1:1">1:1 (Square)</option>
+                        <option value="16:9">16:9 (Widescreen)</option>
+                        <option value="9:16">9:16 (Portrait)</option>
+                        <option value="3:2">3:2 (Classic Photo)</option>
+                        <option value="2:3">2:3 (Portrait Photo)</option>
+                        <option value="4:3">4:3 (Standard TV)</option>
+                        <option value="21:9">21:9 (Ultrawide)</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="imageStyle" class="block text-gray-700 text-base mb-2">Art Style (Select multiple if applicable):</label>
+                    <select id="imageStyle" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Photorealistic">Photorealistic</option>
+                        <option value="Anime">Anime</option>
+                        <option value="Oil Painting">Oil Painting</option>
+                        <option value="Watercolor">Watercolor</option>
+                        <option value="Cyberpunk">Cyberpunk</option>
+                        <option value="Steampunk">Steampunk</option>
+                        <option value="Fantasy Art">Fantasy Art</option>
+                        <option value="Sci-Fi Art">Sci-Fi Art</option>
+                        <option value="Abstract">Abstract</option>
+                        <option value="Impressionistic">Impressionistic</option>
+                        <option value="Pixel Art">Pixel Art</option>
+                        <option value="Cartoon">Cartoon</option>
+                        <option value="Concept Art">Concept Art</option>
+                        <option value="Minimalist">Minimalist</option>
+                        <option value="Gothic">Gothic</option>
+                        <option value="Baroque">Baroque</option>
+                        <option value="Surrealism">Surrealism</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="imageLighting" class="block text-gray-700 text-base mb-2">Lighting (Select multiple if applicable):</label>
+                    <select id="imageLighting" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Soft Lighting">Soft Lighting</option>
+                        <option value="Hard Lighting">Hard Lighting</option>
+                        <option value="Dramatic Lighting">Dramatic Lighting</option>
+                        <option value="Natural Light">Natural Light</option>
+                        <option value="Backlight">Backlight</option>
+                        <option value="Rim Light">Rim Light</option>
+                        <option value="Volumetric Lighting">Volumetric Lighting</option>
+                        <option value="Studio Lighting">Studio Lighting</option>
+                        <option value="Golden Hour">Golden Hour</option>
+                        <option value="Blue Hour">Blue Hour</option>
+                        <option value="Overcast">Overcast</option>
+                        <option value="Night Lighting">Night Lighting</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="imageColors" class="block text-gray-700 text-base mb-2">Color Palette (Select multiple if applicable):</label>
+                    <select id="imageColors" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Vibrant Colors">Vibrant Colors</option>
+                        <option value="Muted Colors">Muted Colors</option>
+                        <option value="Monochromatic">Monochromatic</option>
+                        <option value="Pastel Colors">Pastel Colors</option>
+                        <option value="Warm Tones">Warm Tones</option>
+                        <option value="Cool Tones">Cool Tones</option>
+                        <option value="Grayscale">Grayscale</option>
+                        <option value="Neon Colors">Neon Colors</option>
+                        <option value="Earthy Tones">Earthy Tones</option>
+                        <option value="High Contrast">High Contrast</option>
+                        <option value="Low Contrast">Low Contrast</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="imageComposition" class="block text-gray-700 text-base mb-2">Composition (Select multiple if applicable):</label>
+                    <select id="imageComposition" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Rule of Thirds">Rule of Thirds</option>
+                        <option value="Symmetrical Composition">Symmetrical Composition</option>
+                        <option value="Asymmetrical Composition">Asymmetrical Composition</option>
+                        <option value="Leading Lines">Leading Lines</option>
+                        <option value="Golden Ratio">Golden Ratio</option>
+                        <option value="Close-up Shot">Close-up Shot</option>
+                        <option value="Wide Shot">Wide Shot</option>
+                        <option value="Dutch Angle">Dutch Angle</option>
+                        <option value="Eye-level Shot">Eye-level Shot</option>
+                        <option value="Bird's Eye View">Bird's Eye View</option>
+                        <option value="Worm's Eye View">Worm's Eye View</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="imageAction" class="block text-gray-700 text-base mb-2">Subject Action/Expression (Select multiple if applicable):</label>
+                    <select id="imageAction" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Running">Running</option>
+                        <option value="Smiling">Smiling</option>
+                        <option value="Contemplative">Contemplative</option>
+                        <option value="Dynamic Pose">Dynamic Pose</option>
+                        <option value="Interacting with Object">Interacting with Object</option>
+                        <option value="Jumping">Jumping</option>
+                        <option value="Sleeping">Sleeping</option>
+                        <option value="Angry">Angry</option>
+                        <option value="Joyful">Joyful</option>
+                        <option value="Surprised">Surprised</option>
+                        <option value="Confused">Confused</option>
+                    </select>
+                </div>
+                <div class="input-group mb-6">
+                    <label for="imageOtherDetails" class="block text-gray-700 text-base mb-2">Other Details (Optional text):</label>
+                    <textarea id="imageOtherDetails" rows="2" placeholder="Any other specific details not covered above"
+                              class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"></textarea>
+                </div>
+                <div class="flex justify-center mb-4">
+                    <button class="btn generate-btn" data-category="image">Generate Image Prompt</button>
+                </div>
+                <div id="imageLoadingIndicator" class="loading-indicator hidden">
+                    <div class="spinner"></div>
+                    Generating image prompt...
+                </div>
+                <div id="imagePromptOutput" class="prompt-section hidden">
+                    <h3>Generated Image Prompt</h3>
+                    <p></p>
+                </div>
+            </div>
+
+            <div id="audioSection" class="category-section hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Audio/Music Prompt Details</h2>
+                <div class="input-group mb-4">
+                    <label for="audioModel" class="block text-gray-700 text-base mb-2">Select AI Model:</label>
+                    <select id="audioModel" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Suno">Suno</option>
+                        <option value="Udio">Udio</option>
+                        <option value="Google MusicLM">Google MusicLM</option>
+                        <option value="AIVA">AIVA</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="audioGenre" class="block text-gray-700 text-base mb-2">Genre/Style (Select multiple if applicable):</label>
+                    <select id="audioGenre" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Lo-fi">Lo-fi</option>
+                        <option value="Classical">Classical</option>
+                        <option value="Electronic">Electronic</option>
+                        <option value="Jazz">Jazz</option>
+                        <option value="Ambient">Ambient</option>
+                        <option value="Rock">Rock</option>
+                        <option value="Pop">Pop</option>
+                        <option value="Hip Hop">Hip Hop</option>
+                        <option value="Folk">Folk</option>
+                        <option value="Orchestral">Orchestral</option>
+                        <option value="Cinematic">Cinematic</option>
+                        <option value="Blues">Blues</option>
+                        <option value="Country">Country</option>
+                        <option value="Techno">Techno</option>
+                        <option value="House">House</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="audioMood" class="block text-gray-700 text-base mb-2">Mood/Emotion (Select multiple if applicable):</label>
+                    <select id="audioMood" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Calm">Calm</option>
+                        <option value="Energetic">Energetic</option>
+                        <option value="Mysterious">Mysterious</option>
+                        <option value="Uplifting">Uplifting</option>
+                        <option value="Melancholy">Melancholy</option>
+                        <option value="Exciting">Exciting</option>
+                        <option value="Relaxing">Relaxing</option>
+                        <option value="Intense">Intense</option>
+                        <option value="Dreamy">Dreamy</option>
+                        <option value="Aggressive">Aggressive</option>
+                    </select>
+                </div>
+                <div class="input-group mb-6">
+                    <label for="audioInstruments" class="block text-gray-700 text-base mb-2">Key Instruments/Sounds (Select multiple if applicable):</label>
+                    <select id="audioInstruments" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Piano">Piano</option>
+                        <option value="Synth">Synth</option>
+                        <option value="Guitar">Guitar</option>
+                        <option value="Drums">Drums</option>
+                        <option value="Bass">Bass</option>
+                        <option value="Strings">Strings</option>
+                        <option value="Flute">Flute</option>
+                        <option value="Saxophone">Saxophone</option>
+                        <option value="Rain sounds">Rain sounds</option>
+                        <option value="Birds chirping">Birds chirping</option>
+                        <option value="City ambience">City ambience</option>
+                        <option value="Ocean waves">Ocean waves</option>
+                        <option value="Vocal harmonies">Vocal harmonies</option>
+                    </select>
+                </div>
+                <div class="flex justify-center mb-4">
+                    <button class="btn generate-btn" data-category="audio">Generate Audio Prompt</button>
+                </div>
+                <div id="audioLoadingIndicator" class="loading-indicator hidden">
+                    <div class="spinner"></div>
+                    Generating audio prompt...
+                </div>
+                <div id="audioPromptOutput" class="prompt-section hidden">
+                    <h3>Generated Audio Prompt</h3>
+                    <p></p>
+                </div>
+            </div>
+
+            <div id="videoSection" class="category-section hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">Video Prompt Details</h2>
+                <div class="input-group mb-4">
+                    <label for="videoModel" class="block text-gray-700 text-base mb-2">Select AI Model:</label>
+                    <select id="videoModel" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="RunwayML">RunwayML</option>
+                        <option value="Pika Labs">Pika Labs</option>
+                        <option value="Sora">Sora</option>
+                        <option value="Google Lumiere">Google Lumiere</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="videoAspectRatio" class="block text-gray-700 text-base mb-2">Aspect Ratio (Select one):</label>
+                    <select id="videoAspectRatio" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="">(Optional) Select Aspect Ratio</option>
+                        <option value="16:9">16:9 (Widescreen)</option>
+                        <option value="9:16">9:16 (Vertical/Shorts)</option>
+                        <option value="1:1">1:1 (Square)</option>
+                        <option value="4:3">4:3 (Classic Video)</option>
+                        <option value="21:9">21:9 (Cinematic)</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="videoStyle" class="block text-gray-700 text-base mb-2">Visual Style (Select multiple if applicable):</label>
+                    <select id="videoStyle" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Cinematic">Cinematic</option>
+                        <option value="Cartoon">Cartoon</option>
+                        <option value="Stop-motion">Stop-motion</option>
+                        <option value="Documentary">Documentary</option>
+                        <option value="Anime">Anime</option>
+                        <option value="VFX Heavy">VFX Heavy</option>
+                        <option value="Gritty">Gritty</option>
+                        <option value="Dreamlike">Dreamlike</option>
+                        <option value="Abstract">Abstract</option>
+                        <option value="Hyperrealistic">Hyperrealistic</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="videoCameraMovement" class="block text-gray-700 text-base mb-2">Camera Movement (Select multiple if applicable):</label>
+                    <select id="videoCameraMovement" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Pan">Pan (Horizontal)</option>
+                        <option value="Tilt">Tilt (Vertical)</option>
+                        <option value="Zoom In">Zoom In</option>
+                        <option value="Zoom Out">Zoom Out</option>
+                        <option value="Dolly Shot">Dolly Shot (Moving with subject)</option>
+                        <option value="Tracking Shot">Tracking Shot (Following subject)</option>
+                        <option value="Crane Shot">Crane Shot (Vertical movement)</option>
+                        <option value="Handheld">Handheld (Shaky, realistic)</option>
+                        <option value="Static Shot">Static Shot (Fixed camera)</option>
+                        <option value="POV (Point of View)">POV (Point of View)</option>
+                        <option value="Drone Shot">Drone Shot</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="videoCharacterActions" class="block text-gray-700 text-base mb-2">Character Actions (Select multiple if applicable):</label>
+                    <select id="videoCharacterActions" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Walking">Walking</option>
+                        <option value="Talking">Talking</option>
+                        <option value="Running">Running</option>
+                        <option value="Dancing">Dancing</option>
+                        <option value="Fighting">Fighting</option>
+                        <option value="Expressing Emotion">Expressing Emotion</option>
+                        <option value="Interacting with Environment">Interacting with Environment</option>
+                        <option value="Sitting">Sitting</option>
+                        <option value="Standing">Standing</option>
+                        <option value="Jumping">Jumping</option>
+                        <option value="Sleeping">Sleeping</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="videoEnvironmentDetails" class="block text-gray-700 text-base mb-2">Environment Details (Select multiple if applicable):</label>
+                    <select id="videoEnvironmentDetails" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Lush vegetation">Lush vegetation</option>
+                        <option value="Urban decay">Urban decay</option>
+                        <option value="Futuristic architecture">Futuristic architecture</option>
+                        <option value="Ancient ruins">Ancient ruins</option>
+                        <option value="Snowy landscape">Snowy landscape</option>
+                        <option value="Deserted">Deserted</option>
+                        <option value="Crowded City">Crowded City</option>
+                        <option value="Forest">Forest</option>
+                        <option value="Beach">Beach</option>
+                        <option value="Mountainous">Mountainous</option>
+                        <option value="Underwater">Underwater</option>
+                        <option value="Space">Space</option>
+                    </select>
+                </div>
+                <div class="input-group mb-6">
+                    <label for="videoOtherDetails" class="block text-gray-700 text-base mb-2">Other Details (Optional text):</label>
+                    <textarea id="videoOtherDetails" rows="2" placeholder="Any other specific details not covered above"
+                              class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"></textarea>
+                </div>
+                <div class="flex justify-center mb-4">
+                    <button class="btn generate-btn" data-category="video">Generate Video Prompt</button>
+                </div>
+                <div id="videoLoadingIndicator" class="loading-indicator hidden">
+                    <div class="spinner"></div>
+                    Generating video prompt...
+                </div>
+                <div id="videoPromptOutput" class="prompt-section hidden">
+                    <h3>Generated Video Prompt</h3>
+                    <p></p>
+                </div>
+            </div>
+
+            <div id="3dSection" class="category-section hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4">3D Model Prompt Details</h2>
+                <div class="input-group mb-4">
+                    <label for="3dModel" class="block text-gray-700 text-base mb-2">Select AI Model:</label>
+                    <select id="3dModel" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Luma AI">Luma AI</option>
+                        <option value="Meshy">Meshy</option>
+                        <option value="Blockade Labs">Blockade Labs (3D environment)</option>
+                        <option value="Spline AI">Spline AI</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="3dStyle" class="block text-gray-700 text-base mb-2">Style/Texture (Select multiple if applicable):</label>
+                    <select id="3dStyle" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Low-poly">Low-poly</option>
+                        <option value="Realistic">Realistic</option>
+                        <option value="Stylized">Stylized</option>
+                        <option value="Textured">Textured</option>
+                        <option value="Voxel Art">Voxel Art</option>
+                        <option value="Hand-painted">Hand-painted</option>
+                        <option value="PBR (Physically Based Rendering)">PBR (Physically Based Rendering)</option>
+                        <option value="Abstract">Abstract</option>
+                        <option value="Cartoon">Cartoon</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Fantasy">Fantasy</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="3dPurpose" class="block text-gray-700 text-base mb-2">Purpose/Use Case (Select multiple if applicable):</label>
+                    <select id="3dPurpose" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Game asset">Game asset</option>
+                        <option value="Architectural visualization">Architectural visualization</option>
+                        <option value="Animation character">Animation character</option>
+                        <option value="Product design">Product design</option>
+                        <option value="VFX element">VFX element</option>
+                        <option value="Web AR/VR">Web AR/VR</option>
+                        <option value="3D Printing">3D Printing</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="3dMaterialProperties" class="block text-gray-700 text-base mb-2">Material Properties (Select multiple if applicable):</label>
+                    <select id="3dMaterialProperties" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Glossy">Glossy</option>
+                        <option value="Matte">Matte</option>
+                        <option value="Metallic">Metallic</option>
+                        <option value="Rough">Rough</option>
+                        <option value="Translucent">Translucent</option>
+                        <option value="Emissive">Emissive (Glow)</option>
+                        <option value="Glass">Glass</option>
+                        <option value="Wood Texture">Wood Texture</option>
+                        <option value="Stone Texture">Stone Texture</option>
+                        <option value="Fabric Texture">Fabric Texture</option>
+                        <option value="Plastic">Plastic</option>
+                        <option value="Rubber">Rubber</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="3dGeometricShapes" class="block text-gray-700 text-base mb-2">Geometric Shapes/Complexity (Select multiple if applicable):</label>
+                    <select id="3dGeometricShapes" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Organic Shapes">Organic Shapes</option>
+                        <option value="Geometric Shapes">Geometric Shapes</option>
+                        <option value="Simple Geometry">Simple Geometry</option>
+                        <option value="Complex Geometry">Complex Geometry</option>
+                        <option value="High-poly Mesh">High-poly Mesh</option>
+                        <option value="Low-poly Mesh">Low-poly Mesh</option>
+                        <option value="Sharp Edges">Sharp Edges</option>
+                        <option value="Smooth Curves">Smooth Curves</option>
+                        <option value="Modular">Modular</option>
+                        <option value="Symmetrical">Symmetrical</option>
+                        <option value="Asymmetrical">Asymmetrical</option>
+                    </select>
+                </div>
+                <div class="input-group mb-4">
+                    <label for="3dInteractivity" class="block text-gray-700 text-base mb-2">Interactivity/Functionality (Select multiple if applicable):</label>
+                    <select id="3dInteractivity" multiple class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <option value="Clickable">Clickable</option>
+                        <option value="Movable">Movable</option>
+                        <option value="Animated">Animated</option>
+                        <option value="Physics-enabled">Physics-enabled</option>
+                        <option value="Scalable">Scalable</option>
+                        <option value="Customizable">Customizable</option>
+                        <option value="Interactive Elements">Interactive Elements</option>
+                        <option value="Destructible">Destructible</option>
+                        <option value="Generative">Generative</option>
+                    </select>
+                </div>
+                <div class="input-group mb-6">
+                    <label for="3dOtherDetails" class="block text-gray-700 text-base mb-2">Other Details (Optional text):</label>
+                    <textarea id="3dOtherDetails" rows="2" placeholder="Any other specific details not covered above"
+                              class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"></textarea>
+                </div>
+                <div class="flex justify-center mb-4">
+                    <button class="btn generate-btn" data-category="3d">Generate 3D Prompt</button>
+                </div>
+                <div id="3dLoadingIndicator" class="loading-indicator hidden">
+                    <div class="spinner"></div>
+                    Generating 3D prompt...
+                </div>
+                <div id="3dPromptOutput" class="prompt-section hidden">
+                    <h3>Generated 3D Prompt</h3>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="apiKeyModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close-btn" id="closeApiKeyModal">&times;</span>
+            <h2 class="text-2xl font-semibold mb-4">How to Get a Gemini API Key</h2>
+            <p class="mb-3">To use this tool, you need a Gemini API key from Google AI Studio.</p>
+            <ol class="list-decimal list-inside space-y-2 mb-4">
+                <li>Go to <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="api-key-link">Google AI Studio API Key page</a>.</li>
+                <li>Sign in with your Google account if you haven't already.</li>
+                <li>Click on "Create API key in new project" or select an existing project.</li>
+                <li>Your API key will be generated. Copy this key.</li>
+                <li>Paste the copied API key into the "Your Gemini API Key" field on this page.</li>
+            </ol>
+            <p class="text-sm text-gray-600"><strong>Important:</strong> Keep your API key secure and do not share it publicly. This tool sends your API key to our server to process your request with the Gemini API. We do not store your API key on our server; it is only stored in your browser's local storage for your convenience.</p>
+        </div>
+    </div>
+
+
+    <footer id="mainFooter" class="w-full">
+        <div class="container mx-auto px-4">
+            <p>&copy; <span id="currentYear"></span> myscrpts.com. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Get references to DOM elements
+        const geminiApiKeyInput = document.getElementById('geminiApiKey');
+        const generalIdeaInput = document.getElementById('generalIdea');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const categorySections = document.querySelectorAll('.category-section');
+        const generateButtons = document.querySelectorAll('.generate-btn');
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+        const mainHeader = document.getElementById('mainHeader');
+        const mainFooter = document.getElementById('mainFooter');
+        const currentYearSpan = document.getElementById('currentYear');
+        const clearApiKeyBtn = document.getElementById('clearApiKey');
+
+        // API Key Modal elements
+        const apiKeyModal = document.getElementById('apiKeyModal');
+        const showApiKeyInstructionsBtn = document.getElementById('showApiKeyInstructions');
+        const closeApiKeyModalBtn = document.getElementById('closeApiKeyModal');
+
+        // localStorage keys
+        const API_KEY_STORAGE_KEY = 'geminiApiKey';
+        const API_KEY_EXPIRY_STORAGE_KEY = 'geminiApiKeyExpiry';
+        const API_KEY_DURATION_DAYS = 90; // Set API key validity for 90 days
+
+
+        // Map category to its elements (same as before, ensure all IDs are correct)
+        const categoryElements = {
+            text: {
+                model: document.getElementById('textModel'),
+                tone: document.getElementById('textTone'),
+                audience: document.getElementById('textAudience'),
+                loading: document.getElementById('textLoadingIndicator'),
+                output: document.getElementById('textPromptOutput').querySelector('p'),
+                outputSection: document.getElementById('textPromptOutput')
+            },
+            image: {
+                model: document.getElementById('imageModel'),
+                aspectRatio: document.getElementById('imageAspectRatio'),
+                style: document.getElementById('imageStyle'),
+                lighting: document.getElementById('imageLighting'),
+                colors: document.getElementById('imageColors'),
+                composition: document.getElementById('imageComposition'),
+                action: document.getElementById('imageAction'),
+                otherDetails: document.getElementById('imageOtherDetails'),
+                loading: document.getElementById('imageLoadingIndicator'),
+                output: document.getElementById('imagePromptOutput').querySelector('p'),
+                outputSection: document.getElementById('imagePromptOutput'),
+                mjChaos: document.getElementById('mjChaos'),
+                mjCharacterRef: document.getElementById('mjCharacterRef'),
+                mjNo: document.getElementById('mjNo'),
+                mjQuality: document.getElementById('mjQuality'),
+                mjRepeat: document.getElementById('mjRepeat'),
+                mjSeed: document.getElementById('mjSeed'),
+                mjStop: document.getElementById('mjStop'),
+                mjStylize: document.getElementById('mjStylize'),
+                mjStyleRef: document.getElementById('mjStyleRef'),
+                mjVersion: document.getElementById('mjVersion'),
+                mjWeird: document.getElementById('mjWeird'),
+                mjRaw: document.getElementById('mjRaw'),
+                mjTile: document.getElementById('mjTile'),
+                mjDraft: document.getElementById('mjDraft'),
+                mjFast: document.getElementById('mjFast'),
+                mjImageWeight: document.getElementById('mjImageWeight'),
+                mjRelax: document.getElementById('mjRelax'),
+                mjTurbo: document.getElementById('mjTurbo'),
+                mjStealth: document.getElementById('mjStealth'),
+                mjPublic: document.getElementById('mjPublic'),
+            },
+            audio: {
+                model: document.getElementById('audioModel'),
+                genre: document.getElementById('audioGenre'),
+                mood: document.getElementById('audioMood'),
+                instruments: document.getElementById('audioInstruments'),
+                loading: document.getElementById('audioLoadingIndicator'),
+                output: document.getElementById('audioPromptOutput').querySelector('p'),
+                outputSection: document.getElementById('audioPromptOutput')
+            },
+            video: {
+                model: document.getElementById('videoModel'),
+                aspectRatio: document.getElementById('videoAspectRatio'),
+                style: document.getElementById('videoStyle'),
+                cameraMovement: document.getElementById('videoCameraMovement'),
+                characterActions: document.getElementById('videoCharacterActions'),
+                environmentDetails: document.getElementById('videoEnvironmentDetails'),
+                otherDetails: document.getElementById('videoOtherDetails'),
+                loading: document.getElementById('videoLoadingIndicator'),
+                output: document.getElementById('videoPromptOutput').querySelector('p'),
+                outputSection: document.getElementById('videoPromptOutput')
+            },
+            '3d': {
+                model: document.getElementById('3dModel'),
+                style: document.getElementById('3dStyle'),
+                purpose: document.getElementById('3dPurpose'),
+                materialProperties: document.getElementById('3dMaterialProperties'),
+                geometricShapes: document.getElementById('3dGeometricShapes'),
+                interactivity: document.getElementById('3dInteractivity'),
+                otherDetails: document.getElementById('3dOtherDetails'),
+                loading: document.getElementById('3dLoadingIndicator'),
+                output: document.getElementById('3dPromptOutput').querySelector('p'),
+                outputSection: document.getElementById('3dPromptOutput')
+            }
+        };
+
+        // --- API Key Persistence Logic ---
+        /**
+         * Saves the API key and its expiry date to localStorage.
+         * @param {string} apiKey - The API key to save.
+         */
+        function saveApiKey(apiKey) {
+            const now = new Date();
+            const expiryDate = new Date(now.setDate(now.getDate() + API_KEY_DURATION_DAYS));
+            localStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
+            localStorage.setItem(API_KEY_EXPIRY_STORAGE_KEY, expiryDate.toISOString());
+            console.log(`API Key saved. Expires on: ${expiryDate.toLocaleDateString()}`);
+        }
+
+        /**
+         * Loads the API key from localStorage if available and not expired.
+         */
+        function loadApiKey() {
+            const savedApiKey = localStorage.getItem(API_KEY_STORAGE_KEY);
+            const savedExpiry = localStorage.getItem(API_KEY_EXPIRY_STORAGE_KEY);
+
+            if (savedApiKey && savedExpiry) {
+                const expiryDate = new Date(savedExpiry);
+                if (expiryDate > new Date()) {
+                    geminiApiKeyInput.value = savedApiKey;
+                    console.log('API Key loaded from localStorage.');
+                } else {
+                    // Key has expired
+                    localStorage.removeItem(API_KEY_STORAGE_KEY);
+                    localStorage.removeItem(API_KEY_EXPIRY_STORAGE_KEY);
+                    console.log('Saved API Key has expired and been removed.');
+                }
+            }
+        }
+
+        /**
+         * Clears the saved API key from localStorage and the input field.
+         */
+        function clearSavedApiKey() {
+            localStorage.removeItem(API_KEY_STORAGE_KEY);
+            localStorage.removeItem(API_KEY_EXPIRY_STORAGE_KEY);
+            geminiApiKeyInput.value = '';
+            showMessage('Saved API Key has been cleared.', 'success');
+            console.log('API Key cleared from localStorage.');
+        }
+
+        // Add event listener for the clear API key button
+        clearApiKeyBtn.addEventListener('click', clearSavedApiKey);
+
+        // Load API key when the page loads
+        loadApiKey();
+
+
+        // --- API Key Modal Logic ---
+        showApiKeyInstructionsBtn.addEventListener('click', () => {
+            apiKeyModal.style.display = 'block';
+        });
+        closeApiKeyModalBtn.addEventListener('click', () => {
+            apiKeyModal.style.display = 'none';
+        });
+        window.addEventListener('click', (event) => { // Close modal if clicked outside
+            if (event.target === apiKeyModal) {
+                apiKeyModal.style.display = 'none';
+            }
+        });
+
+
+        // --- Automatic Copyright Year Logic ---
+        currentYearSpan.textContent = new Date().getFullYear();
+
+        // --- Theme Toggle Logic --- (Same as before)
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                body.classList.add('dark');
+                mainHeader.classList.add('dark');
+                mainFooter.classList.add('dark');
+                themeIcon.textContent = '🌙';
+            } else {
+                body.classList.remove('dark');
+                mainHeader.classList.remove('dark');
+                mainFooter.classList.remove('dark');
+                themeIcon.textContent = '☀️';
+            }
+            localStorage.setItem('theme', theme);
+        }
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        setTheme(savedTheme);
+        themeToggleBtn.addEventListener('click', () => {
+            const newTheme = body.classList.contains('dark') ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
+
+        // --- Section Switching Logic --- (Same as before)
+        showSection('textSection');
+        function showSection(sectionId) {
+            categorySections.forEach(section => section.classList.add('hidden'));
+            tabButtons.forEach(button => button.classList.remove('active'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.querySelector(`[data-target="${sectionId}"]`).classList.add('active');
+            if (sectionId === 'imageSection') {
+                toggleMidjourneyParameters();
+            }
+        }
+        document.getElementById('imageModel').addEventListener('change', toggleMidjourneyParameters);
+        function toggleMidjourneyParameters() {
+            const imageModel = document.getElementById('imageModel').value;
+            const mjParamsDiv = document.getElementById('midjourneyParameters');
+            if (imageModel === 'Midjourney') {
+                mjParamsDiv.classList.remove('hidden');
+            } else {
+                mjParamsDiv.classList.add('hidden');
+            }
+        }
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => showSection(button.dataset.target));
+        });
+
+        // --- Generate Button Logic ---
+        generateButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.dataset.category;
+                generateAIPrompt(category);
+            });
+        });
+
+        function getMultiSelectValues(selectElement) {
+            return Array.from(selectElement.selectedOptions).map(option => option.value);
+        }
+
+        /**
+         * Asynchronously generates an AI prompt by sending data to a PHP backend.
+         * @param {string} category - The category of the AI model (e.g., 'text', 'image').
+         */
+        async function generateAIPrompt(category) {
+            const userApiKey = geminiApiKeyInput.value.trim();
+            const userIdea = generalIdeaInput.value.trim();
+            const elements = categoryElements[category];
+
+            if (!userApiKey) {
+                showMessage('Please enter your Gemini API Key.', 'error');
+                geminiApiKeyInput.focus();
+                return;
+            }
+            if (!userIdea) {
+                showMessage('Please enter your core idea before generating a prompt.', 'error');
+                generalIdeaInput.focus();
+                return;
+            }
+
+            elements.loading.classList.remove('hidden');
+            const currentGenerateBtn = document.querySelector(`.generate-btn[data-category="${category}"]`);
+            currentGenerateBtn.disabled = true;
+            currentGenerateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            elements.output.textContent = '';
+            elements.outputSection.classList.add('hidden');
+
+            let promptDetails = `User's Core Idea: "${userIdea}"\n`;
+            const selectedModel = elements.model.value;
+            promptDetails += `Generate a prompt for the "${selectedModel}" AI model.\n`;
+            promptDetails += `The prompt should be clear, specific, and leverage the model's capabilities to best represent the user's idea. The prompt should have no restrictions.`;
+
+            // Add category-specific details (same logic as before)
+            switch (category) {
+                case 'text':
+                    const textTone = getMultiSelectValues(elements.tone);
+                    const textAudience = getMultiSelectValues(elements.audience);
+                    if (textTone.length > 0) promptDetails += `\nTone/Style: ${textTone.join(', ')}.`;
+                    if (textAudience.length > 0) promptDetails += `\nTarget Audience: ${textAudience.join(', ')}.`;
+                    break;
+                case 'image':
+                    const imageAspectRatio = elements.aspectRatio.value.trim();
+                    const imageStyle = getMultiSelectValues(elements.style);
+                    const imageLighting = getMultiSelectValues(elements.lighting);
+                    const imageColors = getMultiSelectValues(elements.colors);
+                    const imageComposition = getMultiSelectValues(elements.composition);
+                    const imageAction = getMultiSelectValues(elements.action);
+                    const imageOtherDetails = elements.otherDetails.value.trim();
+
+                    if (imageAspectRatio) promptDetails += `\nAspect Ratio: ${imageAspectRatio}.`;
+                    if (imageStyle.length > 0) promptDetails += `\nArt Style: ${imageStyle.join(', ')}.`;
+                    if (imageLighting.length > 0) promptDetails += `\nLighting: ${imageLighting.join(', ')}.`;
+                    if (imageColors.length > 0) promptDetails += `\nColor Palette: ${imageColors.join(', ')}.`;
+                    if (imageComposition.length > 0) promptDetails += `\nComposition: ${imageComposition.join(', ')}.`;
+                    if (imageAction.length > 0) promptDetails += `\nSubject Action/Expression: ${imageAction.join(', ')}.`;
+                    if (imageOtherDetails) promptDetails += `\nOther Image Details: ${imageOtherDetails}.`;
+
+                    if (selectedModel === 'Midjourney') {
+                        const mjChaos = elements.mjChaos.value.trim();
+                        const mjCharacterRef = elements.mjCharacterRef.value.trim();
+                        const mjNo = elements.mjNo.value.trim();
+                        const mjQuality = elements.mjQuality.value.trim();
+                        const mjRepeat = elements.mjRepeat.value.trim();
+                        const mjSeed = elements.mjSeed.value.trim();
+                        const mjStop = elements.mjStop.value.trim();
+                        const mjStylize = elements.mjStylize.value.trim();
+                        const mjStyleRef = elements.mjStyleRef.value.trim();
+                        const mjVersion = elements.mjVersion.value.trim();
+                        const mjWeird = elements.mjWeird.value.trim();
+                        const mjRaw = elements.mjRaw.checked;
+                        const mjTile = elements.mjTile.checked;
+                        const mjDraft = elements.mjDraft.checked;
+                        const mjFast = elements.mjFast.checked;
+                        const mjImageWeight = elements.mjImageWeight.value.trim();
+                        const mjRelax = elements.mjRelax.checked;
+                        const mjTurbo = elements.mjTurbo.checked;
+                        const mjStealth = elements.mjStealth.checked;
+                        const mjPublic = elements.mjPublic.checked;
+
+                        if (mjChaos) promptDetails += ` --c ${mjChaos}`;
+                        if (mjCharacterRef) promptDetails += ` --cref ${mjCharacterRef}`;
+                        if (mjNo) promptDetails += ` --no ${mjNo}`;
+                        if (mjQuality) promptDetails += ` --q ${mjQuality}`;
+                        if (mjRepeat) promptDetails += ` --r ${mjRepeat}`;
+                        if (mjSeed) promptDetails += ` --seed ${mjSeed}`;
+                        if (mjStop) promptDetails += ` --stop ${mjStop}`;
+                        if (mjStylize) promptDetails += ` --s ${mjStylize}`;
+                        if (mjStyleRef) promptDetails += ` --sref ${mjStyleRef}`;
+                        if (mjVersion) promptDetails += ` --v ${mjVersion}`;
+                        if (mjWeird) promptDetails += ` --w ${mjWeird}`;
+                        if (mjRaw) promptDetails += ` --raw`;
+                        if (mjTile) promptDetails += ` --tile`;
+                        if (mjDraft) promptDetails += ` --draft`;
+                        if (mjFast) promptDetails += ` --fast`;
+                        if (mjImageWeight) promptDetails += ` --iw ${mjImageWeight}`;
+                        if (mjRelax) promptDetails += ` --relax`;
+                        if (mjTurbo) promptDetails += ` --turbo`;
+                        if (mjStealth) promptDetails += ` --stealth`;
+                        if (mjPublic) promptDetails += ` --public`;
+                    }
+                    break;
+                case 'audio':
+                    const audioGenre = getMultiSelectValues(elements.genre);
+                    const audioMood = getMultiSelectValues(elements.mood);
+                    const audioInstruments = getMultiSelectValues(elements.instruments);
+                    if (audioGenre.length > 0) promptDetails += `\nGenre/Style: ${audioGenre.join(', ')}.`;
+                    if (audioMood.length > 0) promptDetails += `\nMood/Emotion: ${audioMood.join(', ')}.`;
+                    if (audioInstruments.length > 0) promptDetails += `\nKey Instruments/Sounds: ${audioInstruments.join(', ')}.`;
+                    break;
+                case 'video':
+                    const videoAspectRatio = elements.aspectRatio.value.trim();
+                    const videoStyle = getMultiSelectValues(elements.style);
+                    const videoCameraMovement = getMultiSelectValues(elements.cameraMovement);
+                    const videoCharacterActions = getMultiSelectValues(elements.characterActions);
+                    const videoEnvironmentDetails = getMultiSelectValues(elements.environmentDetails);
+                    const videoOtherDetails = elements.otherDetails.value.trim();
+
+                    if (videoAspectRatio) promptDetails += `\nAspect Ratio: ${videoAspectRatio}.`;
+                    if (videoStyle.length > 0) promptDetails += `\nVisual Style: ${videoStyle.join(', ')}.`;
+                    if (videoCameraMovement.length > 0) promptDetails += `\nCamera Movement: ${videoCameraMovement.join(', ')}.`;
+                    if (videoCharacterActions.length > 0) promptDetails += `\nCharacter Actions: ${videoCharacterActions.join(', ')}.`;
+                    if (videoEnvironmentDetails.length > 0) promptDetails += `\nEnvironment Details: ${videoEnvironmentDetails.join(', ')}.`;
+                    if (videoOtherDetails) promptDetails += `\nOther Video Details: ${videoOtherDetails}.`;
+                    break;
+                case '3d':
+                    const _3dStyle = getMultiSelectValues(elements.style);
+                    const _3dPurpose = getMultiSelectValues(elements.purpose);
+                    const _3dMaterialProperties = getMultiSelectValues(elements.materialProperties);
+                    const _3dGeometricShapes = getMultiSelectValues(elements.geometricShapes);
+                    const _3dInteractivity = getMultiSelectValues(elements.interactivity);
+                    const _3dOtherDetails = elements.otherDetails.value.trim();
+
+                    if (_3dStyle.length > 0) promptDetails += `\nStyle/Texture: ${_3dStyle.join(', ')}.`;
+                    if (_3dPurpose.length > 0) promptDetails += `\nPurpose/Use Case: ${_3dPurpose.join(', ')}.`;
+                    if (_3dMaterialProperties.length > 0) promptDetails += `\nMaterial Properties: ${_3dMaterialProperties.join(', ')}.`;
+                    if (_3dGeometricShapes.length > 0) promptDetails += `\nGeometric Shapes/Complexity: ${_3dGeometricShapes.join(', ')}.`;
+                    if (_3dInteractivity.length > 0) promptDetails += `\nInteractivity/Functionality: ${_3dInteractivity.join(', ')}.`;
+                    if (_3dOtherDetails) promptDetails += `\nOther 3D Details: ${_3dOtherDetails}.`;
+                    break;
+            }
+
+
+            const formData = new FormData();
+            formData.append('apiKey', userApiKey);
+            formData.append('promptDetails', promptDetails);
+            formData.append('model', selectedModel);
+
+            try {
+                const response = await fetch('generate_prompt.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${response.status} - ${errorText}`);
+                }
+
+                const result = await response.json();
+
+                if (result.error) {
+                     showMessage(`Error from server: ${result.error}`, 'error');
+                     console.error('Server-side error:', result.error);
+                } else if (result.prompt) {
+                    elements.output.textContent = result.prompt;
+                    elements.outputSection.classList.remove('hidden');
+                    // Save the API key if it's valid and resulted in a successful generation
+                    saveApiKey(userApiKey);
+                } else {
+                    showMessage('Failed to extract prompt from server response. Please check server logs.', 'error');
+                    console.error('Unexpected server response structure:', result);
+                }
+
+            } catch (error) {
+                console.error('Error calling PHP backend:', error);
+                showMessage(`An error occurred: ${error.message}. Check console for details.`, 'error');
+            } finally {
+                elements.loading.classList.add('hidden');
+                currentGenerateBtn.disabled = false;
+                currentGenerateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.className = `fixed bottom-4 right-4 p-3 rounded-lg shadow-lg text-white z-2000 ${type === 'error' ? 'bg-red-500' : 'bg-green-500'}`;
+            document.body.appendChild(messageDiv);
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+    </script>
+
+
+</body>
+</html>
