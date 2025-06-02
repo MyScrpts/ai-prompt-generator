@@ -1,10 +1,6 @@
-    <!--
-    ===========================================================================
-    PHP Backend Code (Save as generate_prompt.php in the same directory or update JS fetch path)
-    ===========================================================================
 
     <?php
-    /*
+
     // generate_prompt.php
 
     header('Content-Type: application/json');
@@ -100,5 +96,3 @@
     }
 
     ?>
-    */
-    -->
